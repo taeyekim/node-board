@@ -1,0 +1,16 @@
+{
+  "name": "node-express-board-practice",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:server": "npm --workspace apps/server run dev",
+    "build": "npm --workspace apps/web run build",
+    "test": "npm --workspace apps/server test",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down"
+  }
+}
