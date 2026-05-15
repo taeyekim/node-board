@@ -11,6 +11,7 @@
 - Browser E2E smoke test now covers register, create, detail view, comment, update, search, and delete.
 - Redis and Nginx Docker Compose runtime were verified successfully.
 - Render deployment blueprint and Vercel frontend env example were added.
+- GitHub Actions CI workflow was added.
 
 ## Current Feature Status
 
@@ -25,6 +26,7 @@
 - Redis local runtime: passing
 - Nginx local reverse proxy: passing
 - Vercel/Render deployment: prepared, not deployed
+- CI: configured, remote run pending after push
 
 ## 2026-05-15 Update
 

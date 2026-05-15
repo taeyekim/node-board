@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test and build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: local_db
+          POSTGRES_USER: board_user
+          POSTGRES_PASSWORD: board_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U board_user -d local_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://board_user:board_password@localhost:5432/local_db
+      JWT_SECRET: ci_only_jwt_secret_for_node_board_tests
+      JWT_EXPIRES_IN: 1d
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npm --workspace apps/server exec prisma validate
+
+      - name: Generate Prisma client
+        run: npm --workspace apps/server run prisma:generate
+
+      - name: Check migrations apply
+        run: npm --workspace apps/server run prisma:deploy
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build

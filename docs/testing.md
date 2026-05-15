@@ -2,6 +2,24 @@
 
 ## 2026-05-15 Verified Commands
 
+GitHub Actions CI was added at `.github/workflows/ci.yml`.
+
+CI runs on:
+
+- pull requests
+- pushes to `main`
+
+CI checks:
+
+- `npm ci`
+- `npm --workspace apps/server exec prisma validate`
+- `npm --workspace apps/server run prisma:generate`
+- `npm --workspace apps/server run prisma:deploy`
+- `npm test`
+- `npm run build`
+
+The CI job starts a PostgreSQL service container and sets `DATABASE_URL` for Prisma validation and migration checks.
+
 Current verification commands:
 
 ```bash

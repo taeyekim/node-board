@@ -26,6 +26,14 @@ The backend should continue to work without Redis, but local Redis/Nginx practic
 Status:
 Verified. E2E server reported `Redis cache enabled`, and Nginx `/api/health` returned `cache=ok`.
 
+### Decision: Add CI before cloud deployment
+
+Reason:
+Pushes and pull requests should prove Prisma schema validity, migrations, backend tests, and frontend build before relying on Vercel/Render CD.
+
+Status:
+Implemented with GitHub Actions workflow `.github/workflows/ci.yml`.
+
 ## 2026-05-14
 
 ### Decision: Use Prisma ORM for PostgreSQL access

@@ -19,6 +19,7 @@
 - Added Render deployment blueprint `render.yaml`.
 - Added `apps/web/.env.example` for Vercel `VITE_API_BASE_URL`.
 - Added `npm run prisma:deploy` for production Prisma migration deploy.
+- Added GitHub Actions CI workflow for Prisma validation, migration deploy check, tests, and frontend build.
 
 ## Current Verification
 
@@ -31,6 +32,7 @@
 - `npm run infra:up`: pass with Docker API permission
 - Nginx/Redis runtime verification: pass
 - Vercel/Render deployment preparation: files prepared, actual cloud deployment not executed
+- GitHub Actions CI: configured, remote run pending after push
 
 ## Active Work
 
