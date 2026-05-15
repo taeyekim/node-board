@@ -5,10 +5,7 @@ export const openApiDocument = {
     version: "0.3.0",
     description: "Node.js, Express, Prisma, PostgreSQL, JWT 게시판 연습 API",
   },
-  servers: [
-    { url: "http://localhost:3001", description: "Express dev server" },
-    { url: "http://localhost:8080", description: "Nginx reverse proxy" },
-  ],
+  servers: [{ url: "/", description: "Current API host" }],
   paths: {
     "/api/health": {
       get: {
