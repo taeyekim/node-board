@@ -1,5 +1,101 @@
 # Backend Guide
 
+## 2026-05-15 Board Metadata Update
+
+The backend now includes real board metadata and comments.
+
+Post fields added by Prisma migration `20260515004728_add_board_metadata`:
+
+```text
+category
+viewCount
+```
+
+Comment model:
+
+```text
+Comment -> Post
+Comment -> User
+```
+
+Post list query parameters:
+
+```text
+GET /api/posts?q=&category=all|notice|free|question|info&sort=latest|oldest|title|views&page=1&pageSize=10
+```
+
+Comment endpoints:
+
+```text
+GET    /api/posts/:id/comments
+POST   /api/posts/:id/comments
+DELETE /api/posts/:postId/comments/:commentId
+```
+
+Verified:
+
+```text
+npm test
+npm --workspace apps/server exec prisma migrate status
+runtime API smoke
+Redis-enabled E2E smoke
+Nginx reverse proxy /api/health
+```
+
+## 2026-05-15 Auth Update
+
+The backend now includes JWT authentication.
+
+Auth endpoints:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+```
+
+Protected endpoints:
+
+```text
+POST   /api/posts
+PUT    /api/posts/:id
+DELETE /api/posts/:id
+```
+
+Public endpoints:
+
+```text
+GET /api/posts
+GET /api/posts/:id
+```
+
+Required environment variables:
+
+```text
+JWT_SECRET=replace_with_a_long_random_secret
+JWT_EXPIRES_IN=1d
+```
+
+Local development falls back to a dev-only JWT secret if `JWT_SECRET` is missing, but deployment must set a real secret.
+
+## Prisma ORM Update
+
+Backend persistence now uses Prisma ORM instead of handwritten `pg` queries.
+
+- Prisma schema: `apps/server/prisma/schema.prisma`
+- Prisma config: `apps/server/prisma.config.ts`
+- Runtime client: `apps/server/src/db.js`
+- Migration command: `npm --workspace apps/server run prisma:migrate -- --name init`
+- Generate command: `npm --workspace apps/server run prisma:generate`
+
+The `posts` table should be created by Prisma Migrate. Do not create the table manually unless a task explicitly asks for a SQL-only recovery path.
+
+Local `.env` example:
+
+```text
+DATABASE_URL=postgresql://board_user:your_password@localhost:5432/local_db
+```
+
 ## 현재 상태
 
 백엔드 MVP 코드가 `apps/server`에 있다.

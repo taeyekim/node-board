@@ -10,7 +10,11 @@
     "dev:server": "npm --workspace apps/server run dev",
     "build": "npm --workspace apps/web run build",
     "test": "npm --workspace apps/server test",
+    "test:e2e": "node scripts/run-e2e.mjs",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }

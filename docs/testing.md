@@ -1,5 +1,43 @@
 # Testing Guide
 
+## 2026-05-15 Verified Commands
+
+Current verification commands:
+
+```bash
+npm test
+npm run build
+npm --workspace apps/server exec prisma migrate status
+npm run test:e2e
+docker compose config
+npm run infra:up
+npm run infra:down
+```
+
+Current results:
+
+- `npm test`: pass
+- `npm run build`: pass
+- `prisma migrate status`: database schema is up to date
+- `npm run test:e2e`: pass
+- `docker compose config`: pass, with Docker config access warnings in the non-escalated shell
+- Redis/Nginx runtime: pass after Docker API permission
+- Nginx static root, `/api/health`, and `/api/openapi.json`: pass
+
+`npm run test:e2e` starts the Express server and Vite dev server, runs a Chromium flow for register/create/detail/comment/update/search/delete, then cleans up the spawned processes.
+
+## Prisma Verification
+
+When the backend schema changes, verify Prisma before runtime testing.
+
+```bash
+npm --workspace apps/server exec prisma -- validate
+npm --workspace apps/server run prisma:generate
+npm --workspace apps/server run prisma:migrate -- --name init
+```
+
+`prisma migrate dev` changes the local database schema, so run it only after the target `DATABASE_URL` is confirmed.
+
 ## 현재 상태
 
 서버 유닛 테스트와 프론트 빌드 검증 명령이 있다.

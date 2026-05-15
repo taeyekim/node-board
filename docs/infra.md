@@ -1,5 +1,58 @@
 # Infrastructure Guide
 
+## 2026-05-15 Runtime Verification
+
+Docker Compose Redis/Nginx runtime has been verified.
+
+Verified commands and checks:
+
+```bash
+npm run build
+docker compose config
+npm run infra:up
+```
+
+Runtime checks:
+
+```text
+http://localhost:8080 -> 200
+http://localhost:8080/api/health -> status=ok, database=ok, cache=ok
+http://localhost:8080/api/openapi.json -> 200
+```
+
+After verification, containers were stopped with:
+
+```bash
+npm run infra:down
+```
+
+Note:
+The non-escalated shell showed Docker config/API permission warnings. Running Docker commands with Docker API permission succeeded.
+
+## 2026-05-15 Deployment Preparation
+
+Render backend preparation:
+
+- `render.yaml` added at the repository root.
+- `apps/server` has `npm run prisma:deploy` for production migration deploy.
+- Render start command runs migrations before `npm start`.
+
+Required Render environment variables:
+
+```text
+DATABASE_URL
+JWT_SECRET
+JWT_EXPIRES_IN
+CORS_ORIGIN
+REDIS_URL
+CACHE_TTL_SECONDS
+```
+
+Vercel frontend preparation:
+
+- `apps/web/.env.example` added.
+- Set `VITE_API_BASE_URL` to the Render backend URL.
+
 ## 현재 상태
 
 로컬 인프라 연습용 Docker Compose 설정이 있다.

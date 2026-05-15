@@ -1,5 +1,53 @@
 # Features
 
+## 2026-05-15 Final Update
+
+- Post category is now stored in PostgreSQL through Prisma.
+- Post view count is now stored in PostgreSQL and increments on detail reads.
+- Comments are now stored in PostgreSQL and connected to posts and users.
+- Post list API now supports server-side search, category filtering, sorting, and pagination.
+- React board UI now uses real category, view count, comment count, and pagination values from the API.
+- React detail view now supports comment display, authenticated comment creation, and comment deletion.
+- Browser E2E smoke test now covers register, create, detail view, comment, update, search, and delete.
+- Redis and Nginx Docker Compose runtime were verified successfully.
+- Render deployment blueprint and Vercel frontend env example were added.
+
+## Current Feature Status
+
+- JWT auth: passing
+- Protected post create/update/delete: passing
+- Public post list/detail: passing
+- Category: passing
+- View count: passing
+- Comments/comment count: passing
+- Search/sort/pagination API: passing
+- Frontend API integration: passing
+- Redis local runtime: passing
+- Nginx local reverse proxy: passing
+- Vercel/Render deployment: prepared, not deployed
+
+## 2026-05-15 Update
+
+- PostgreSQL schema is now managed by Prisma Migrate.
+- Local migration `20260514085950_init` created the `posts` table.
+- Local migration `20260515002744_add_auth_users` created users and connected posts to authors.
+- User confirmed backend, frontend, and CRUD flow worked after migration.
+- React UI was redesigned with Tailwind CSS application UI patterns.
+- `npm run build`: pass after UI redesign.
+- React UI was redesigned again as a Korean community-style board.
+- Frontend runtime endpoint `http://localhost:5173` returned HTTP 200.
+- Backend health endpoint returned `database: ok`.
+- JWT register/login/me API implemented.
+- Post create/update/delete now require JWT authentication.
+- Frontend login/register/logout flow implemented.
+- Auth runtime smoke tests passed on temporary port `3301`.
+
+## 2026-05-14 Update
+
+- PostgreSQL schema management changed from manual SQL to Prisma Migrate.
+- Express API code now uses Prisma Client for post CRUD.
+- Runtime database verification was completed locally by the user after migration.
+
 기능 상태는 코드 작성 여부가 아니라 검증 결과를 기준으로 기록한다.
 
 ## Status Legend

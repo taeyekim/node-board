@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id        BigInt    @id @default(autoincrement())
+  title     String    @db.VarChar(200)
+  content   String
+  category  String    @default("free") @db.VarChar(20)
+  viewCount Int       @default(0) @map("view_count")
+  authorId  BigInt?   @map("author_id")
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  comments  Comment[]
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("posts")
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())
+  email        String   @unique @db.VarChar(255)
+  name         String   @db.VarChar(40)
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  posts        Post[]
+  comments     Comment[]
+
+  @@map("users")
+}
+
+model Comment {
+  id        BigInt   @id @default(autoincrement())
+  content   String
+  postId    BigInt   @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  BigInt?  @map("author_id")
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([postId])
+  @@map("comments")
+}

@@ -1,11 +1,11 @@
 import cors from "cors";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
+import { authRouter } from "./auth.js";
 import { initializeCache, isCacheReady } from "./cache.js";
-import { pool } from "./db.js";
+import { prisma } from "./db.js";
 import { openApiDocument } from "./openapi.js";
 import { postsRouter } from "./posts.js";
-import { ensureSchema } from "./schema.js";
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.get("/api/health", async (_req, res) => {
   try {
-    await pool.query("SELECT 1");
+    await prisma.$queryRaw`SELECT 1`;
     res.json({
       status: "ok",
       database: "ok",
@@ -40,6 +40,7 @@ app.get("/api/openapi.json", (_req, res) => {
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+app.use("/api/auth", authRouter);
 app.use("/api/posts", postsRouter);
 
 app.use((err, _req, res, _next) => {
@@ -48,7 +49,6 @@ app.use((err, _req, res, _next) => {
 });
 
 try {
-  await ensureSchema();
   const cacheStatus = await initializeCache();
   app.listen(port, () => {
     console.log(`Board API listening on http://localhost:${port}`);

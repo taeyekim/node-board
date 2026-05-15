@@ -1,5 +1,57 @@
 # Decisions
 
+## 2026-05-15 Final
+
+### Decision: Store board metadata in PostgreSQL through Prisma
+
+Reason:
+View count, category, and comments need to be real persisted board data, not frontend placeholders.
+
+Status:
+Approved by user and implemented with migration `20260515004728_add_board_metadata`.
+
+### Decision: Use a small Playwright browser smoke script
+
+Reason:
+The Codex in-app browser backend was unavailable, and a repeatable local browser verification is more reliable than a one-off manual click-through.
+
+Status:
+Implemented as `npm run test:e2e`.
+
+### Decision: Keep Redis optional but verify it with Docker Compose
+
+Reason:
+The backend should continue to work without Redis, but local Redis/Nginx practice was part of the project goal.
+
+Status:
+Verified. E2E server reported `Redis cache enabled`, and Nginx `/api/health` returned `cache=ok`.
+
+## 2026-05-14
+
+### Decision: Use Prisma ORM for PostgreSQL access
+
+Reason:
+The user wants to avoid manually creating tables with SQL and practice a common ORM-based Node.js workflow. Prisma Migrate will own the `posts` table schema.
+
+Status:
+Approved and implemented in code. Local database migration completed.
+
+### Decision: Use Tailwind Plus preview as visual reference, not copied source
+
+Reason:
+The user wants a plain Tailwind official-component look. Tailwind Plus preview pages can guide layout choices, but locked paid component source should not be copied without an explicit license-provided snippet.
+
+Status:
+Approved and implemented as custom Tailwind CSS markup.
+
+### Decision: Add JWT authentication before expanding board metadata
+
+Reason:
+The board needs login ownership before author, comments, view counts, and protected write actions can behave like a real community board.
+
+Status:
+Approved and implemented. Refresh tokens, password recovery, social login, and admin roles are deferred.
+
 이 문서는 중요한 결정과 이유를 기록한다.
 
 ## 2026-05-11

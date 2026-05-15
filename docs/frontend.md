@@ -1,5 +1,69 @@
 # Frontend Guide
 
+## 2026-05-15 API Integration Update
+
+The React board UI now uses real backend data for:
+
+- category
+- view count
+- comment count
+- server-side search
+- server-side sort
+- server-side pagination
+- comments
+
+The detail view fetches the selected post from `GET /api/posts/:id`, which increments the stored view count.
+
+The comment UI supports:
+
+```text
+GET    /api/posts/:id/comments
+POST   /api/posts/:id/comments
+DELETE /api/posts/:postId/comments/:commentId
+```
+
+Verified:
+
+```text
+npm run build
+npm run test:e2e
+```
+
+## 2026-05-15 UI Direction
+
+The board UI uses Tailwind CSS utility classes. The first redesign followed Tailwind Plus Application UI preview patterns:
+
+- Page heading for the screen title and status summary
+- Stacked list for the post list
+- Form layout for create/edit
+- Description list for post detail
+
+Tailwind Plus locked source code is not copied into this project. The implementation is custom markup styled with Tailwind CSS.
+
+The current UI direction is a Korean community-style board:
+
+- White background and thin gray separators
+- Desktop table list with number, title, author, date, and views
+- Mobile card list
+- Board title, description, category tabs, search, sort, and write button
+- Pagination below the list
+- Separate detail and write/edit panels
+
+Author, views, and comment count are frontend placeholders until the backend schema is expanded.
+
+## 2026-05-15 Auth UI
+
+The frontend now supports:
+
+- Register
+- Login
+- Logout
+- Restore current user from stored JWT
+- Attach `Authorization: Bearer <token>` to protected API calls
+- Require login before opening the write form
+
+The JWT is currently stored in `localStorage` for practice simplicity.
+
 ## 현재 상태
 
 프론트엔드 MVP 코드가 `apps/web`에 있다.

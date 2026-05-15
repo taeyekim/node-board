@@ -1,5 +1,65 @@
 # Progress
 
+## 2026-05-15 Final Implementation Update
+
+- Added Prisma migration `20260515004728_add_board_metadata`.
+- Added real post `category` and `view_count` fields.
+- Added `comments` table with author and post relations.
+- Added server-side post search, category filter, sort, and pagination.
+- Added post detail view-count increment.
+- Added comment list/create/delete APIs.
+- Connected the React UI to real category, view count, comment count, pagination, search, and comment APIs.
+- Added `npm run test:e2e` Playwright browser smoke flow.
+- Verified Redis cache enabled during Docker/Nginx runtime verification.
+- Verified Nginx reverse proxy:
+  - `http://localhost:8080` returned 200.
+  - `http://localhost:8080/api/health` returned `status=ok`, `database=ok`, `cache=ok`.
+  - `http://localhost:8080/api/openapi.json` returned 200.
+- Docker Compose Redis/Nginx containers were stopped after verification.
+- Added Render deployment blueprint `render.yaml`.
+- Added `apps/web/.env.example` for Vercel `VITE_API_BASE_URL`.
+- Added `npm run prisma:deploy` for production Prisma migration deploy.
+
+## Current Verification
+
+- `npm test`: pass
+- `npm run build`: pass
+- `npm --workspace apps/server exec prisma migrate status`: database schema is up to date
+- API runtime smoke: pass
+- `npm run test:e2e`: pass
+- `docker compose config`: pass, with Docker config access warnings in the non-escalated shell
+- `npm run infra:up`: pass with Docker API permission
+- Nginx/Redis runtime verification: pass
+- Vercel/Render deployment preparation: files prepared, actual cloud deployment not executed
+
+## Active Work
+
+Preparing final commit and push.
+
+## 2026-05-15 Update
+
+- Prisma migration `20260514085950_init` was created and applied to local PostgreSQL `local_db`.
+- Prisma migration `20260515002744_add_auth_users` was created and applied for JWT authentication.
+- Backend and frontend were reported by the user as running successfully after migration.
+- The React board UI was redesigned with Tailwind CSS patterns inspired by Tailwind Plus Application UI previews.
+- Broken Korean UI copy in `apps/web/src/App.jsx` and `apps/web/src/api.js` was corrected.
+- `npm run build` passed after the UI redesign.
+- The React board UI was redesigned again as a Korean community-style board with a table list, search, category tabs, pagination, mobile cards, and a separate detail/form area.
+- Runtime checks: `http://localhost:3001/api/health` returned `database: ok`; `http://localhost:5173` returned HTTP 200.
+- JWT authentication was implemented with register, login, current user, protected create/update/delete, and frontend token storage.
+- Runtime auth checks passed on temporary port `3301`: register, `/api/auth/me`, authenticated post creation, and unauthenticated post rejection.
+
+## Active Work
+
+JWT authentication implementation and verification.
+
+## 2026-05-14 Update
+
+- Backend persistence is being moved from direct `pg` SQL queries to Prisma ORM.
+- Added Prisma schema/config and replaced post CRUD queries with Prisma Client calls.
+- Manual SQL table creation is no longer the expected setup path.
+- Prisma Migrate has now been run successfully against local PostgreSQL.
+
 ## Current Status
 
 하네스 문서 초기화가 완료되었다.
